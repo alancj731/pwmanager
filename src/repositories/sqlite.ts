@@ -1,7 +1,7 @@
 "use server";
 
 import { getSqliteClient } from "./prisma";
-import { PrismaClient as PrismaClientSqlite } from '@/prisma/generated/db-client';
+import { PrismaClient as PrismaClientSqlite } from '../../prisma/generated/sqlite-client';
 
 export class SqliteRepository {
   static instance: SqliteRepository | null = null;
