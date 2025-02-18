@@ -6,7 +6,7 @@ import { UserInDB } from '@/types/global';
 import { serialize } from 'cookie'
 
 
-const JWT_SECRET = process.env.JWT_SECRET || "not found";
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "not found";
 const sqlite = SqliteRepository.getSqliteInstance();
 
 export default async function handler(
@@ -41,11 +41,11 @@ export default async function handler(
             email: user.email,
         }
         
-        if (JWT_SECRET === "not found") {
-            console.error("JWT_SECRET not found in environment variables");
+        if (JWT_SECRET_KEY === "not found") {
+            console.error("JWT_SECRET_KEY not found in environment variables");
         }
 
-        const token = jwt.sign(payload, JWT_SECRET, {expiresIn: "1h"});
+        const token = jwt.sign(payload, JWT_SECRET_KEY, {expiresIn: "1h"});
 
         const cookieOptions = {
             httpOnly: true,
