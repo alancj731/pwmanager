@@ -11,28 +11,6 @@ export async function middleware(req: NextRequest) {
   }
   return NextResponse.next();
 
-  // const tokenCookie = req.cookies.get("token");
-
-  // if (!tokenCookie || JWT_SECRET === "not found") {
-  //   console.log("No token found");
-  //   return NextResponse.redirect(new URL("/login", req.url)); // Redirect to login if no token
-  // } else {
-  //   try {
-  //     // Verify the token
-  //     const token = tokenCookie.value;
-  //     const secret = new TextEncoder().encode(JWT_SECRET);
-
-  //     try {
-  //       const data = await jwtVerify(token, secret);
-  //       return NextResponse.next();
-  //     } catch {
-  //       return NextResponse.redirect(new URL("/login", req.url));
-  //     }
-  //   } catch (error) {
-  //     // If the token is invalid, redirect to login
-  //     return NextResponse.redirect(new URL("/login", req.url));
-  //   }
-  // }
 }
 
 async function verifyToken(
@@ -58,5 +36,5 @@ async function verifyToken(
 }
 
 export const config = {
-  matcher: ["/", "/dashboard"],
+  matcher: ["/"],
 };
