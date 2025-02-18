@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { jwtVerify } from "jose/jwt/verify";
+import { jwtVerify } from "jose";
 
 const JWT_SECRET = process.env.JWT_SECRET || "not found"; // Secret key for JWT verification
 
