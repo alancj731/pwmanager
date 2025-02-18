@@ -2,22 +2,22 @@
 
 import { useState, useEffect } from "react";
 import { Menu, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/src/components/ui/button";
 import { ToastContainer } from "react-toastify";
-import { showToast } from "@/lib/utils";
+import { showToast } from "@/src/lib/utils";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/src/components/ui/dropdown-menu";
 import axios from "axios";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/src/contexts/UserContext";
 
 
 
-import { logoutUser } from "@/services/UserService";
+import { logoutUser } from "@/src/services/UserService";
 import { set } from "react-hook-form";
 
 export default function Navbar() {

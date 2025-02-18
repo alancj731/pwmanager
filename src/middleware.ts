@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
-import { verifyAuth } from '@/lib/auth'
+import { verifyAuth } from '@/src/lib/auth'
 
 export const config = {
   matcher: ['/api/v1/password', '/' ],

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Progress } from "@/components/ui/progress"
+import { Progress } from "@/src/components/ui/progress"
 
 const ProgressBar = ({ targetValue = 100 }) => {
   const [progress, setProgress] = useState(0);

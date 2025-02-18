@@ -1,6 +1,6 @@
 'use client'
-import Dashboard from "@/components/dashboard"
-import Navbar from "@/components/navbar"
+import Dashboard from "@/src/components/dashboard"
+import Navbar from "@/src/components/navbar"
 
 export default function Home() {
 

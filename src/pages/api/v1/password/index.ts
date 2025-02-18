@@ -1,7 +1,7 @@
 "use server";
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SupabaseRepository } from "@/repositories/supabase";
+import { SupabaseRepository } from "@/src/repositories/supabase";
 import { ResponseData } from "@/types/global";
 import { verifyToken } from "../user/verify";
 

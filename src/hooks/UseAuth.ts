@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios, { AxiosResponse } from "axios";
 import { ResponseData } from "@/types/global.d";
-import { setUser } from "@/services/UserService";
+import { setUser } from "@/src/services/UserService";
 
 const useAuth = async () => {
   const [loading, setLoading] = useState(true);

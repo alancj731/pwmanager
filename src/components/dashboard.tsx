@@ -1,15 +1,15 @@
 "use client";
 import { useState, useEffect, use } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Button } from "@/src/components/ui/button";
 import { Search, Plus, Copy, Minus } from "lucide-react";
-import { SupabaseRepository } from "@/repositories/supabase";
+import { SupabaseRepository } from "@/src/repositories/supabase";
 import axios from "axios";
 import { ResponseData } from "@/types/global";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/src/contexts/UserContext";
 import { PasswordDialog } from "./password-dialog";
-import { showToast } from "@/lib/utils";
-import { copyToClipboard } from "@/lib/utils";
+import { showToast } from "@/src/lib/utils";
+import { copyToClipboard } from "@/src/lib/utils";
 import { describe } from "node:test";
 
 export type PasswordData = {

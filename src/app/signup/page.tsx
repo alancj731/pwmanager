@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { getUserByEmail, createUser } from "@/services/UserService";
+import { getUserByEmail, createUser } from "@/src/services/UserService";
 import { ToastContainer } from "react-toastify";
-import { showToast } from "@/lib/utils";
+import { showToast } from "@/src/lib/utils";
 
 const validationSchema = yup.object().shape({
   name: yup.string().required(),

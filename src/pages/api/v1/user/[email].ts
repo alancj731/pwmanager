@@ -1,7 +1,7 @@
 "use server";
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SqliteRepository } from "@/repositories/sqlite";
+import { SqliteRepository } from "@/src/repositories/sqlite";
 
 const sqlite = SqliteRepository.getSqliteInstance();
 

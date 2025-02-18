@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SqliteRepository } from "@/repositories/sqlite";
+import { SqliteRepository } from "@/src/repositories/sqlite";
 import { UserInDB } from '@/types/global';
 import { serialize } from 'cookie'
 

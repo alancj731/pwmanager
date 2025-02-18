@@ -4,9 +4,9 @@ import type React from "react";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
 import {
   Card,
   CardContent,
@@ -14,14 +14,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/src/components/ui/card";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { userLogin } from "@/services/UserService";
+import { userLogin } from "@/src/services/UserService";
 import { ToastContainer } from "react-toastify";
-import { showToast } from "@/lib/utils";
-import { useUser } from "@/contexts/UserContext";
+import { showToast } from "@/src/lib/utils";
+import { useUser } from "@/src/contexts/UserContext";
 
 
 const validationSchema = yup.object().shape({
