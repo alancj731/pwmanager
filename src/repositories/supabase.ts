@@ -1,5 +1,5 @@
 import { getSupabaseClient } from "./prisma";
-import { PrismaClient as PrismaClientSupabase } from "../../prisma/generated/supabase-client";
+import { PrismaClient as PrismaClientSupabase } from "-/prisma/generated/supabase-client";
 import { ResponseData } from "@/types/global";
 
 export class SupabaseRepository {

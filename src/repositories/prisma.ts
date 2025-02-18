@@ -1,6 +1,6 @@
 import prisma from '@prisma/client';
-import { PrismaClient as PrismaClientSqlite } from  '../../prisma/generated/sqlite-client';
-import { PrismaClient as PrismaClientSupabase } from '../../prisma/generated/supabase-client';
+import { PrismaClient as PrismaClientSqlite } from  '-/prisma/generated/sqlite-client';
+import { PrismaClient as PrismaClientSupabase } from '-/prisma/generated/supabase-client';
 
 
 let sqliteClient : PrismaClientSqlite | null = null;
