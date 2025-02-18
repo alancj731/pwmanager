@@ -5,7 +5,7 @@ import { SupabaseRepository } from "@/repositories/supabase";
 import { ResponseData } from "@/types/global";
 import { verifyToken } from "../user/verify";
 
-const JWT_SECRET = process.env.JWT_SECRET || "not found";
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "not found";
 const supabase = SupabaseRepository.getSupabaseInstance();
 
 interface PAY_LOAD {
@@ -18,7 +18,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-  const verified = await verifyToken(req, JWT_SECRET);
+  const verified = await verifyToken(req, JWT_SECRET_KEY);
 
   if(!verified) {
     return res.status(401).json({ error: "Unauthorized"});
