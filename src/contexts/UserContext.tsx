@@ -50,7 +50,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({
       }
       catch(err){
         setUser(null);
-        console.log("User is not logged in!");
+        console.log(`User is not logged in! Error: ${err}`);
       }
     }
     fetchUser();

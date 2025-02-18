@@ -15,7 +15,7 @@ interface PasswordDialogProps {
 
 export function PasswordDialog({ open, onOpenChange, passwords, setPasswords, onSuccessSavePassword }: PasswordDialogProps) {
   
-  const addPassword = async (data: PasswordData)  : Promise<Boolean> => {
+  const addPassword = async (data: PasswordData)  : Promise<boolean> => {
     const url = "/api/v1/password";
     try{
       const response = await axios.post(url, data);

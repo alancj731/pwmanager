@@ -25,7 +25,8 @@ export class SqliteRepository {
     try {
       const allUsers = await this.client.user.findMany();
       return allUsers;
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
       return { error: err.message || "Failed to get users!" };
     }
   }
@@ -45,7 +46,8 @@ export class SqliteRepository {
       } else {
         return user;
       }
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
       console.error(err);
       return { error: err.message || "Failed to get user!" };
     }
@@ -62,7 +64,8 @@ export class SqliteRepository {
       });
 
       return result;
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
       return { error: err.message || "Failed to create user!" };
     }
   }
@@ -92,7 +95,8 @@ export class SqliteRepository {
       
       return result;
     } 
-    catch (err: any) {
+    catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
       return { error: err.message || "Failed to update user!" };
     }
   }
@@ -109,7 +113,8 @@ export class SqliteRepository {
         },
       });
       return result;
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
       return { error: err.message || "Failed to delete user!" };
     }
   }

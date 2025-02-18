@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SqliteRepository } from "@/src/repositories/sqlite";
-import { UserInDB } from '@/types/global';
+import { UserInDB } from '@/src/types/global';
 import { serialize } from 'cookie'
 
 
@@ -60,7 +60,8 @@ export default async function handler(
         res.setHeader('Set-Cookie', cookieString)
         res.status(200).json({data: {name: user.name, email: user.email}});
 
-    } catch (err: any) {
+    } catch (e: unknown) {
+        const err = e as {message?: string, data?: object}
         res.status(500).json({error: err.message || "Failed to create user", data: err.data || {}});
     }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Menu, User } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { ToastContainer } from "react-toastify";
@@ -12,13 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import axios from "axios";
 import { useUser } from "@/src/contexts/UserContext";
-
-
-
 import { logoutUser } from "@/src/services/UserService";
-import { set } from "react-hook-form";
 
 export default function Navbar() {
     // const [user, setLocalUser] = useState({name: "", email: ""});

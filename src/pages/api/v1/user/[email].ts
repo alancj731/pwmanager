@@ -23,7 +23,8 @@ export default async function handler(
     } else {
       return res.status(200).json({ message: "User found!"});
     }
-  } catch (err: any) {
+  } catch (e: unknown) {
+    const err = e as {message?: string, data?: object}
     return res.status(500).json({
       error: err.message || "Failed to get user!",
       data: err.data || {},

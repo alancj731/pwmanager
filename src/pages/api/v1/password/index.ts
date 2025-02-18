@@ -2,7 +2,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SupabaseRepository } from "@/src/repositories/supabase";
-import { ResponseData } from "@/types/global";
+import { ResponseData } from "@/src/types/global";
 import { verifyToken } from "../user/verify";
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "not found";
@@ -67,7 +67,8 @@ export async function handleDelete(
         .status(200)
         .json({ message: "Password deleted successfully", data: result.data });
     }
-  } catch (err: any) {
+  } catch (e : unknown) {
+    const err = e as {message?: string, data?: object}
     return res
       .status(500)
       .json({
@@ -97,7 +98,8 @@ export  async function handleGet(
     } else {
       return res.status(200).json({ message: "Passwords found!", data: result.data });
     }
-  } catch (err: any) {
+  } catch (e: unknown) {
+    const err = e as {message?: string, data?: object}
     return res.status(500).json({
       error: err.message || "Failed to get passwords!",
       data: err.data || {},
@@ -130,7 +132,8 @@ export  async function handlePost(
         .json({ message: "Password created successfully", data: result.data });
     }
   }
-  catch (err: any) {
+  catch (e: unknown) {
+    const err = e as {message?: string, data?: object}
     return res
       .status(500)
       .json({

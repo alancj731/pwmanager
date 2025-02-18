@@ -8,5 +8,5 @@ export interface UserInDB {
 export interface ResponseData {
     error?: string;
     message?: string;
-    data?: any;
+    data?: unknown;
 };

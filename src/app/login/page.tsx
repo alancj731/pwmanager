@@ -54,9 +54,10 @@ export default function LoginPage() {
       showToast(result.error, "error");
       console.log(result.error);
     } else {
-      setUser(result.data);
+      const res = result as { data: { name: string; email: string } };
+      setUser(res.data);
 
-      const name = result.data.name;
+      const name = res.data.name;
       showToast(`Welcom ${name} !`, "success");
 
       const intervalId = setInterval(() => {

@@ -29,7 +29,8 @@ export default async function handler(
         .status(201)
         .json({ message: "User created successfully", data: user });
     }
-  } catch (err: any) {
+  } catch (e: unknown) {
+    const err = e as {message?: string, data?: object}
     return res
       .status(500)
       .json({

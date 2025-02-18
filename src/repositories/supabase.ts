@@ -29,7 +29,8 @@ export class SupabaseRepository {
         }
       );
       return {data: allPasswords};
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object};
       return { error: err.message || "Failed to get users!" };
     }
   }
@@ -53,7 +54,8 @@ export class SupabaseRepository {
       } else {
         return { data: passwords };
       }
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object};
       console.error(err);
       return { error: err.message || "Failed to get user!" };
     }
@@ -79,7 +81,8 @@ export class SupabaseRepository {
         },
       });
       return { data: result };
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object};
       return { error: err.message || "Failed to save password!" };
     }
   }
@@ -102,7 +105,8 @@ export class SupabaseRepository {
         },
       });
       return { data: result };
-    } catch (err: any) {
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object};
       return { error: err.message || "Failed to delete password!" };
     }
   }

@@ -1,16 +1,14 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect} from "react";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { Search, Plus, Copy, Minus } from "lucide-react";
-import { SupabaseRepository } from "@/src/repositories/supabase";
 import axios from "axios";
-import { ResponseData } from "@/types/global";
+import { ResponseData } from "@/src/types/global";
 import { useUser } from "@/src/contexts/UserContext";
 import { PasswordDialog } from "./password-dialog";
 import { showToast } from "@/src/lib/utils";
 import { copyToClipboard } from "@/src/lib/utils";
-import { describe } from "node:test";
 
 export type PasswordData = {
   description: string;
@@ -30,10 +28,8 @@ export default function Dashboard() {
   const [passwords, setPasswords] = useState<PasswordData[]>([]);
   const [filteredPasswords, setFilteredPasswords] = useState<PasswordData[]>([]);
   const [open, setOpen] = useState(false);
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   let timeoutId: NodeJS.Timeout | null = null;
-
-  const supabase = SupabaseRepository.getSupabaseInstance();
 
   const getPasswords = async () => {
     const user_email = user?.email;
@@ -46,9 +42,10 @@ export default function Dashboard() {
 
     if ("error" in response) {
     } else {
-      if (response.data.data.length > 0) {
-        const data = response.data.data as PasswordWithId[];
-        const passwords = data.map(({ id, ...rest }) => rest);
+      const res = response as {data: {data: PasswordWithId[]}};
+      if (res.data.data.length > 0) {
+        const data = res.data.data as PasswordWithId[];
+        const passwords = data.map(({ id, ...rest }) => { if(id) return rest; return rest}); // to pass linting 
         setPasswords(passwords);
       }
     }

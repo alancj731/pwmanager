@@ -3,7 +3,7 @@
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 import { AxiosResponse } from 'axios';
-import { ResponseData } from '@/types/global';
+import { ResponseData } from '@/src/types/global';
 
 export async function logoutUser(){
     try{
@@ -13,7 +13,8 @@ export async function logoutUser(){
         }
         return {message: "Logout successful"};
     }
-    catch(err : any){
+    catch(e : unknown){
+        const err = e as {message?: string, data?: object};
         return {error: err.message || "Failed to logout!", data: err.data || {}};
     }
 }
@@ -32,7 +33,8 @@ export async function createUser({name, email, password} : {name: string, email:
         }
         return {data: response.data.data};
     }
-    catch(err : any){
+    catch(e : unknown){
+        const err = e as {message?: string, data?: object};
         return {error: err.message || "Failed to create user!", data: err.data || {}};
     }
 }
@@ -46,11 +48,13 @@ export async function getUserByEmail(email : string): Promise<ResponseData> {
         const response : AxiosResponse<ResponseData> = await axios.get(`/api/v1/user/${emailURI}`);
 
         if (response.status !== 200){
-            return {error: response.data.data.error || "Failed to get user by email"};
+            const res = response as {data: {data: {error?: string}}};
+            return {error: res.data.data.error || "Failed to get user by email"};
         }
         return {message: "User found"};
     }
-    catch(err : any){
+    catch(e : unknown){
+        const err = e as {message?: string, data?: object};
         return {error: err.message || "Failed to get user!", data: err.data || {}};
     }
 }
@@ -69,7 +73,8 @@ export async function userLogin({email, password} : {email: string, password: st
             return {message: "Login successful", data: response.data.data};
         }
     }
-    catch(err : any){
+    catch(e : unknown){
+        const err = e as {message?: string, data?: object};
         return {error: err.message || "Failed to login!", data: err.data || {}};
     }
 }
