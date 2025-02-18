@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "../contexts/UserContext";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <Script
+          src="https://cdn.tailwindcss.com"
+          strategy="afterInteractive" // Load after page becomes interactive
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

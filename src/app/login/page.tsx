@@ -23,15 +23,14 @@ import { ToastContainer } from "react-toastify";
 import { showToast } from "@/src/lib/utils";
 import { useUser } from "@/src/contexts/UserContext";
 
-
 const validationSchema = yup.object().shape({
   email: yup.string().email("Invalid email address!").required(),
   password: yup.string().required("Password is required"),
 });
 
-export default function LoginPage(formData: FormData) {
+export default function LoginPage() {
   const router = useRouter();
-  const {user, setUser} = useUser();
+  const { setUser } = useUser();
 
   const {
     register,
@@ -41,7 +40,10 @@ export default function LoginPage(formData: FormData) {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data: any): Promise<void> => {
+  const onSubmit = async (data: {
+    email: string;
+    password: string;
+  }): Promise<void> => {
     const { email, password } = data;
     if (!email || !password) {
       return;
@@ -51,20 +53,16 @@ export default function LoginPage(formData: FormData) {
     if (result.error) {
       showToast(result.error, "error");
       console.log(result.error);
-    } 
-    else {  
+    } else {
+      setUser(result.data);
 
-      setUser(result.data)
-      
       const name = result.data.name;
       showToast(`Welcom ${name} !`, "success");
-      
-      
+
       const intervalId = setInterval(() => {
         router.push("/");
         clearInterval(intervalId);
       }, 3000);
-
     }
   };
 
@@ -85,7 +83,6 @@ export default function LoginPage(formData: FormData) {
                 id="email"
                 type="text"
                 placeholder=""
-                // onChange={(e) => setEmail(e.target.value)}
                 {...register("email")}
               />
               {errors.email && (
@@ -107,7 +104,7 @@ export default function LoginPage(formData: FormData) {
               Sign In
             </Button>
             <div className="text-center text-sm">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-primary hover:underline">
                 Sign up
               </Link>

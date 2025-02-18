@@ -26,7 +26,7 @@ const validationSchema = yup.object().shape({
     ),
 });
 
-export default function SignUpPage(formData: FormData) {
+export default function SignUpPage() {
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ export default function SignUpPage(formData: FormData) {
     resolver: yupResolver(validationSchema),
   });
 
-  async function onSignUp(data: any) {
+  async function onSignUp(data: {name: string, email: string, password: string}) {
     console.log("Signing up:", data);
     const { name, email, password } = data;
     if (!name || !email || !password) {
