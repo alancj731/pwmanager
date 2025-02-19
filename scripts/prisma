@@ -4,3 +4,4 @@ npx prisma generate --schema=prisma/schema.supabase.prisma
 
 # push schema to db
 npx prisma db push --schema=prisma/schema.supabase.prisma
+npx prisma db push --schema=prisma/schema.sqlite.prisma
