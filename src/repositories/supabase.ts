@@ -148,6 +148,7 @@ export class SupabaseRepository {
   }
 
   async createUser(data: { email: string; name: string; password: string }) {
+    console.log("prisma create user touched", data);
     if (!this.client) {
       return { error: "Prisma client does not exist!" };
     }
@@ -159,6 +160,7 @@ export class SupabaseRepository {
 
       return result;
     } catch (e: unknown) {
+      console.log("error in create user", e);
       const err = e as {message?: string, data?: object}
       return { error: err.message || "Failed to create user!" };
     }

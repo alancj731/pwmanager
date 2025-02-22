@@ -26,6 +26,7 @@ export async function createUser({name, email, password} : {name: string, email:
     try{
         const saltRounds = 10; // The number of salt rounds (higher is more secure, but slower)
         const hashedPassword = await bcrypt.hash(password, saltRounds);
+        console.log(email, "hashedPassword", hashedPassword);
         
         const response : AxiosResponse<ResponseData> = await axios.post("/api/v1/user/create", {name, email, password: hashedPassword});
         if (response.status !== 201){

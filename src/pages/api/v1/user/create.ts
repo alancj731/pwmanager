@@ -14,6 +14,8 @@ export default async function handler(
     return;
   }
   const { name, email, password } = req.body;
+  console.log("name, email, password", name, email, password);
+
   if (!name || !email || !password) {
     res
       .status(400)
@@ -21,6 +23,7 @@ export default async function handler(
     return;
   }
   try {
+    console.log('prisma client', client)
     const user = await client.createUser({ name, email, password });
     if ("error" in user) {
       return res.status(404).json({ error: "Failed to create user", data: {} });
