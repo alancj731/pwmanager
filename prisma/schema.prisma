@@ -4,8 +4,8 @@ generator client {
 
 datasource supabasedb {
   provider = "postgresql"
-  url      = env("SUPABASE_PASSWORD_URL")
-  directUrl = env("DIRECT_SUPABASE_PASSWORD_URL")
+  url      = env("SUPABASE_URL")
+  directUrl = env("DIRECT_SUPABASE_URL")
 }
 
 model password {
