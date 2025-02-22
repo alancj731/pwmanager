@@ -1,20 +1,12 @@
-import { PrismaClient as PrismaClientSqlite } from  '@/prisma/generated/sqlite-client';
-import { PrismaClient as PrismaClientSupabase } from '@/prisma/generated/supabase-client';
+import { PrismaClient  } from  '@prisma/client';
 
 
-let sqliteClient : PrismaClientSqlite | null = null;
-let supabaseClient : PrismaClientSupabase | null = null;
+let client : PrismaClient | null = null;
 
-export function getSqliteClient() : PrismaClientSqlite {
-    if(!sqliteClient){
-        sqliteClient = new PrismaClientSqlite();
+export function getClient() : PrismaClient {
+    if(!client){
+        client = new PrismaClient();
     }
-    return sqliteClient;
+    return client;
 }
 
-export function getSupabaseClient() : PrismaClientSupabase {
-    if(!supabaseClient){
-        supabaseClient = new PrismaClientSupabase();
-    }
-    return supabaseClient;
-}

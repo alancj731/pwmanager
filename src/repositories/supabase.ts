@@ -1,12 +1,12 @@
-import { getSupabaseClient } from "./prisma";
-import { PrismaClient as PrismaClientSupabase } from "@/prisma/generated/supabase-client";
+import { getClient } from "./prisma";
+import { PrismaClient } from "@prisma/client";
 import { ResponseData } from "@/src/types/global";
 
 export class SupabaseRepository {
   static instance: SupabaseRepository | null = null;
-  private client: PrismaClientSupabase | null = null;
+  private client: PrismaClient | null = null;
 
-  static getSupabaseInstance() {
+  static getInstance() {
     if (!this.instance) {
       this.instance = new SupabaseRepository();
     }
@@ -14,7 +14,7 @@ export class SupabaseRepository {
   }
 
   constructor() {
-    this.client = getSupabaseClient();
+    this.client = getClient();
   }
 
   async getAllPasswods(user_email: string) : Promise<ResponseData> {
@@ -108,6 +108,108 @@ export class SupabaseRepository {
     } catch (e: unknown) {
       const err = e as {message?: string, data?: object};
       return { error: err.message || "Failed to delete password!" };
+    }
+  }
+
+  // ----------------------below is for User table---------------------------
+  async getAllUsers() {
+    if (!this.client) {
+      return { error: "Prisma client does not exist!" };
+    }
+    try {
+      const allUsers = await this.client.user.findMany();
+      return allUsers;
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
+      return { error: err.message || "Failed to get users!" };
+    }
+  }
+
+  async getUserByEmail(email: string) {
+    if (!this.client) {
+      return { error: "Prisma client does not exist!" };
+    }
+    try {
+      const user = await this.client.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+      if (!user) {
+        return { error: "User not found!" };
+      } else {
+        return user;
+      }
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
+      console.error(err);
+      return { error: err.message || "Failed to get user!" };
+    }
+  }
+
+  async createUser(data: { email: string; name: string; password: string }) {
+    if (!this.client) {
+      return { error: "Prisma client does not exist!" };
+    }
+
+    try {
+      const result = await this.client.user.create({
+        data: data,
+      });
+
+      return result;
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
+      return { error: err.message || "Failed to create user!" };
+    }
+  }
+
+  async updateUser(
+    email: string,
+    data: { email: string; name?: string; password?: string }
+  ) {
+    if (!this.client) {
+      return { error: "Prisma client does not exist!" };
+    }
+
+    try {
+      const updateData: { email: string; name?: string; password?: string } = {
+        email: email,
+      };
+
+      if (data.name) updateData.name = data.name;
+      if (data.password) updateData.password = data.password;
+
+      const result = await this.client.user.update({
+        where: {
+          email: email,
+        },
+        data: updateData,
+      });
+      
+      return result;
+    } 
+    catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
+      return { error: err.message || "Failed to update user!" };
+    }
+  }
+
+  async deleteUser(email: string) {
+    if (!this.client) {
+      return { error: "Prisma client does not exist!" };
+    }
+
+    try {
+      const result = await this.client.user.delete({
+        where: {
+          email: email,
+        },
+      });
+      return result;
+    } catch (e: unknown) {
+      const err = e as {message?: string, data?: object}
+      return { error: err.message || "Failed to delete user!" };
     }
   }
 }

@@ -1,12 +1,11 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/supabase-client"
 }
 
 datasource supabasedb {
   provider = "postgresql"
-  url      = env("SUPABASE_URL")
-  directUrl = env("DIRECT_SUPABASE_URL")
+  url      = env("SUPABASE_PASSWORD_URL")
+  directUrl = env("DIRECT_SUPABASE_PASSWORD_URL")
 }
 
 model password {
@@ -17,4 +16,12 @@ model password {
   user_email    String    
 
   @@unique([description, user_email]) 
+}
+
+model user {
+  id       Int     @id  @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  approved Boolean @default(false)
 }
