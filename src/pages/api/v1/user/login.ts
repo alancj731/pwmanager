@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SqliteRepository } from "@/src/repositories/sqlite";
+import { SupabaseRepository } from "@/src/repositories/supabase";
 import { UserInDB } from '@/src/types/global';
 import { serialize } from 'cookie'
 
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "not found";
-const sqlite = SqliteRepository.getSqliteInstance();
+const client = SupabaseRepository.getInstance();
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +23,7 @@ export default async function handler(
         return;
     }
     try {
-        const result = await sqlite.getUserByEmail(email);
+        const result = await client.getUserByEmail(email);
         if ('error' in result) {
             res.status(404).json({error: "User does not exist!"});
             return;

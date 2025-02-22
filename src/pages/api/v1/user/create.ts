@@ -1,8 +1,8 @@
 "use server";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SqliteRepository } from "@/src/repositories/sqlite";
+import { SupabaseRepository } from "@/src/repositories/supabase";
 
-const sqlite = SqliteRepository.getSqliteInstance();
+const client = SupabaseRepository.getInstance();
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,7 +21,7 @@ export default async function handler(
     return;
   }
   try {
-    const user = await sqlite.createUser({ name, email, password });
+    const user = await client.createUser({ name, email, password });
     if ("error" in user) {
       return res.status(404).json({ error: "Failed to create user", data: {} });
     } else {

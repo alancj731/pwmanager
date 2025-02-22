@@ -1,7 +1,7 @@
 # genereate clients for different schema
-npx prisma generate --schema=prisma/schema.sqlite.prisma
-npx prisma generate --schema=prisma/schema.supabase.prisma
+npx prisma generate --schema=prisma/schema.user.prisma
+npx prisma generate --schema=prisma/schema.password.prisma
 
 # push schema to db
-npx prisma db push --schema=prisma/schema.supabase.prisma
-npx prisma db push --schema=prisma/schema.sqlite.prisma
+npx prisma db push --schema=prisma/schema.user.prisma
+npx prisma db push --schema=prisma/schema.password.prisma

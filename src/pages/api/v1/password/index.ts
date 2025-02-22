@@ -4,12 +4,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { SupabaseRepository } from "@/src/repositories/supabase";
 import { ResponseData } from "@/src/types/global";
 import { verifyToken } from "../user/verify";
+import { encrypt, decrypt } from "@/src/lib/crypto";
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "not found";
-const supabase = SupabaseRepository.getSupabaseInstance();
+const supabase = SupabaseRepository.getInstance();
 
 interface PAY_LOAD {
-  name : string;
+  name: string;
   email: string;
 }
 
@@ -17,37 +18,35 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-
   const verified = await verifyToken(req, JWT_SECRET_KEY);
 
-  if(!verified) {
-    return res.status(401).json({ error: "Unauthorized"});
+  if (!verified) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   const tokenPayload = verified.payload as unknown as PAY_LOAD;
 
   if (req.method === "GET") {
-    return handleGet(req, res, tokenPayload); 
+    return handleGet(req, res, tokenPayload);
   }
 
   if (req.method === "POST") {
-    return handlePost(req, res, tokenPayload); 
+    return handlePost(req, res, tokenPayload);
   }
 
   if (req.method === "DELETE") {
-    return handleDelete(req, res, tokenPayload); 
+    return handleDelete(req, res, tokenPayload);
   }
 
   return res.status(405).json({ error: "Method not allowed" });
 }
-
 
 export async function handleDelete(
   req: NextApiRequest,
   res: NextApiResponse,
   tokenPayload: PAY_LOAD
 ) {
-  const user_email : string = tokenPayload.email as string;
+  const user_email: string = tokenPayload.email as string;
   const { description } = req.body;
 
   if (!user_email || !description) {
@@ -57,49 +56,61 @@ export async function handleDelete(
   }
 
   try {
-    const result : ResponseData = await supabase.deletePassword(user_email, description);
-    
+    const result: ResponseData = await supabase.deletePassword(
+      user_email,
+      description
+    );
+
     if ("error" in result) {
-      return res.status(404).json({ error: "Failed to delete password", data: {} });
-    } 
-    else {
+      return res
+        .status(404)
+        .json({ error: "Failed to delete password", data: {} });
+    } else {
       return res
         .status(200)
         .json({ message: "Password deleted successfully", data: result.data });
     }
-  } catch (e : unknown) {
-    const err = e as {message?: string, data?: object}
-    return res
-      .status(500)
-      .json({
-        error: err.message || "Failed to delete password",
-        data: err.data || {},
-      });
+  } catch (e: unknown) {
+    const err = e as { message?: string; data?: object };
+    return res.status(500).json({
+      error: err.message || "Failed to delete password",
+      data: err.data || {},
+    });
   }
 }
 
-export  async function handleGet(
+export async function handleGet(
   req: NextApiRequest,
   res: NextApiResponse,
   tokenPayload: PAY_LOAD
 ) {
-  
-
-  const user_email : string = tokenPayload.email as string;
+  const user_email: string = tokenPayload.email as string;
 
   try {
     if (!user_email) {
       return res.status(400).json({ error: "User email not found", data: {} });
     }
 
-    const result : ResponseData = await supabase.getAllPasswods(user_email);
+    const result: ResponseData = await supabase.getAllPasswods(user_email);
     if ("error" in result) {
-      return res.status(404).json({ error: "Error in getting all passwords", data: {} });
+      return res
+        .status(404)
+        .json({ error: "Error in getting all passwords", data: {} });
     } else {
-      return res.status(200).json({ message: "Passwords found!", data: result.data });
+      const enctrypedData = result.data as { password: string }[];
+      const decreptedData = enctrypedData.map(({ password, ...other }) => {
+        return {
+          password: decrypt(password),
+          ...other,
+        };
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Passwords found!", data: decreptedData });
     }
   } catch (e: unknown) {
-    const err = e as {message?: string, data?: object}
+    const err = e as { message?: string; data?: object };
     return res.status(500).json({
       error: err.message || "Failed to get passwords!",
       data: err.data || {},
@@ -107,38 +118,52 @@ export  async function handleGet(
   }
 }
 
-export  async function handlePost(
+export async function handlePost(
   req: NextApiRequest,
   res: NextApiResponse,
   tokenPayload: PAY_LOAD
 ) {
-  const user_email : string = tokenPayload.email as string;
-  
+  const user_email: string = tokenPayload.email as string;
+
   const { description, user_name, password } = req.body;
 
   if (!user_email || !description || !user_name || !password) {
     return res
       .status(400)
-      .json({ error: "User email, description, user name and password are required", data: {} });
+      .json({
+        error: "User email, description, user name and password are required",
+        data: {},
+      });
   }
-  
-  try{
-    const result : ResponseData = await supabase.savePassword(description, user_name, password, user_email);
+
+  try {
+    const encryptedPassword = encrypt(password);
+    console.log("encryptedPassword", encryptedPassword);
+    if (!encryptedPassword) {
+      return res.status(500).json({
+        error: "Failed to encrypt password",
+      });
+    }
+    const result: ResponseData = await supabase.savePassword(
+      description,
+      user_name,
+      encryptedPassword!,
+      user_email
+    );
     if ("error" in result) {
-      return res.status(404).json({ error: "Failed to create password", data: {} });
+      return res
+        .status(404)
+        .json({ error: "Failed to create password", data: {} });
     } else {
       return res
         .status(201)
         .json({ message: "Password created successfully", data: result.data });
     }
-  }
-  catch (e: unknown) {
-    const err = e as {message?: string, data?: object}
-    return res
-      .status(500)
-      .json({
-        error: err.message || "Failed to create password",
-        data: err.data || {},
-      });
+  } catch (e: unknown) {
+    const err = e as { message?: string; data?: object };
+    return res.status(500).json({
+      error: err.message || "Failed to create password",
+      data: err.data || {},
+    });
   }
 }

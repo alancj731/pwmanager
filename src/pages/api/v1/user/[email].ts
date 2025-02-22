@@ -1,9 +1,9 @@
 "use server";
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { SqliteRepository } from "@/src/repositories/sqlite";
+import { SupabaseRepository } from "@/src/repositories/supabase";
 
-const sqlite = SqliteRepository.getSqliteInstance();
+const sqlite = SupabaseRepository.getInstance();
 
 export default async function handler(
   req: NextApiRequest,
